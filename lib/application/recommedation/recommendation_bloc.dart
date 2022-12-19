@@ -45,6 +45,8 @@ class RecommendationBloc
         potassiumLevel: event.potassiumLevel,
       ));
     });
-    on<SubmitDataToBackendEvent>((event, emit) {});
+    on<SubmitDataToBackendEvent>((event, emit) {
+      //Todo
+    });
   }
 }
