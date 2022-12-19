@@ -40,7 +40,7 @@ class _DefaultTextBoxState extends State<DefaultTextBox> {
         vertical: 8,
       ),
       child: Container(
-        height: displayHeight(context) * 0.06,
+        height: 60,
         decoration: BoxDecoration(
           color: widget.backgroundColor,
           borderRadius: BorderRadius.circular(35),
@@ -68,9 +68,9 @@ class _DefaultTextBoxState extends State<DefaultTextBox> {
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(
+            contentPadding: const EdgeInsets.symmetric(
               horizontal: 10,
-              vertical: displayHeight(context) * 0.018,
+              vertical: 18,
             ),
           ),
         ),

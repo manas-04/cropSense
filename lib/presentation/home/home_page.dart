@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
           borderRadius: 30,
           onPressed: () {
             Future.delayed(
-              const Duration(milliseconds: 800),
+              const Duration(milliseconds: 600),
               () {
                 context.read<HomePageBloc>().add(
                       ContributeToUsButtonClickedEvent(),

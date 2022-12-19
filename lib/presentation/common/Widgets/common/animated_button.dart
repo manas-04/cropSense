@@ -45,7 +45,7 @@ class _AnimatedButtonState extends State<CustomAnimatedButton> {
       borderColor: widget.borderColor ?? primaryColor2,
       borderRadius: widget.borderRadius ?? 10.0,
       borderWidth: 1,
-      animationDuration: const Duration(milliseconds: 800),
+      animationDuration: const Duration(milliseconds: 600),
       onPress: () {
         widget.onPressed();
       },

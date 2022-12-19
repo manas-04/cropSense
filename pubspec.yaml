@@ -48,6 +48,7 @@ dependencies:
   extended_image: ^6.3.4
   flutter_animated_button: ^2.0.2
   fluttertoast: ^8.0.8
+  csc_picker: ^0.2.6
 
 flutter_icons:
   android: true

@@ -1,6 +1,13 @@
-import 'package:crop_sense/presentation/common/Widgets/default_text_box.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:crop_sense/presentation/common/Widgets/common/animated_button.dart';
+import 'package:crop_sense/presentation/helpers/font_style_helper.dart';
+import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../application/recommedation/recommendation_bloc.dart';
+import '../common/Widgets/default_text_box.dart';
 import '../helpers/color_helper.dart';
 import '../helpers/size_helper.dart';
 
@@ -12,118 +19,370 @@ class CropRecommendationsPage extends StatefulWidget {
       _CropRecommendationsPageState();
 }
 
-class _CropRecommendationsPageState extends State<CropRecommendationsPage> {
-  final TextEditingController _cityController = TextEditingController();
+class _CropRecommendationsPageState extends State<CropRecommendationsPage>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _humidityController = TextEditingController();
   final TextEditingController _phLevelController = TextEditingController();
   final TextEditingController _nitrogenController = TextEditingController();
   final TextEditingController _phosphorusController = TextEditingController();
+  final TextEditingController _potassiumController = TextEditingController();
+
+  late TabController tabController = TabController(
+    length: 2,
+    vsync: this,
+  );
+  bool tabControllerListenerSetted = false;
+
+  String? countryName;
+  String? stateName;
+  String? cityName;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: primaryColor2.withOpacity(0.8),
-      ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal: displayWidth(context) * 0.1,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DefaultTextBox(
-                key: const ValueKey("City"),
-                hintText: 'City',
-                labelText: 'City',
-                icon: const Icon(
-                  Icons.location_city_rounded,
-                  color: primaryColor2,
-                ),
-                textEditingController: _cityController,
-                textInputType: TextInputType.number,
-                obscureText: false,
-                enabled: true,
-                backgroundColor: primaryColor5,
+    return BlocProvider(
+      create: (context) => RecommendationBloc(InitialRecommendationState()),
+      child: BlocConsumer<RecommendationBloc, RecommendationState>(
+        listener: (context, state) {
+          if (state is CountryChangeState) {
+            countryName = state.countryName;
+          }
+          if (state is StateChangeState) {
+            stateName = state.stateName;
+          }
+          if (state is CityChangeState) {
+            cityName = state.cityName;
+          }
+          if (state is NextButtonClickedState) {
+            if (state.countryName == null || state.countryName == '') {
+              Fluttertoast.showToast(
+                msg: 'Please enter country name!',
+                backgroundColor: errorColor,
+                textColor: backgroundColor,
+              );
+            } else if (state.stateName == null || state.stateName == '') {
+              Fluttertoast.showToast(
+                msg: 'Please enter state name!',
+                backgroundColor: errorColor,
+                textColor: backgroundColor,
+              );
+            } else {
+              context.read<RecommendationBloc>().add(ChangeTabIndexEvent());
+            }
+          }
+          if (state is ChangeTabIndexState) {
+            tabController.index = 1;
+          }
+          if (state is SubmitRecommendationFormClickedState) {
+            if (state.phLevel == null || state.phLevel == '') {
+              Fluttertoast.showToast(
+                msg: 'Please enter phLevel of Soil!',
+                backgroundColor: errorColor,
+                textColor: backgroundColor,
+              );
+            } else if (state.humidtyLevel == null || state.humidtyLevel == '') {
+              Fluttertoast.showToast(
+                msg: 'Please enter humidity level!',
+                backgroundColor: errorColor,
+                textColor: backgroundColor,
+              );
+            } else if (state.nitrgoenLevel == null ||
+                state.nitrgoenLevel == '') {
+              Fluttertoast.showToast(
+                msg: 'Please enter nitrogen level!',
+                backgroundColor: errorColor,
+                textColor: backgroundColor,
+              );
+            } else if (state.phosphorusLevel == null ||
+                state.phosphorusLevel == '') {
+              Fluttertoast.showToast(
+                msg: 'Please enter phosphorus level!',
+                backgroundColor: errorColor,
+                textColor: backgroundColor,
+              );
+            } else if (state.potassiumLevel == null ||
+                state.potassiumLevel == '') {
+              Fluttertoast.showToast(
+                msg: 'Please enter potassium level!',
+                backgroundColor: errorColor,
+                textColor: backgroundColor,
+              );
+            } else if (int.parse(state.phLevel!) > 14 ||
+                int.parse(state.phLevel!) < 0) {
+              Fluttertoast.showToast(
+                msg: 'Please enter a valid pH Level value!',
+                backgroundColor: errorColor,
+                textColor: backgroundColor,
+              );
+            } else {
+              context.read<RecommendationBloc>().add(
+                    SubmitDataToBackendEvent(
+                      cityName: cityName!,
+                      countryName: countryName!,
+                      stateName: stateName!,
+                      humidtyLevel: _humidityController.text,
+                      nitrgoenLevel: _nitrogenController.text,
+                      phLevel: _phLevelController.text,
+                      phosphorusLevel: _phosphorusController.text,
+                      potassiumLevel: _potassiumController.text,
+                    ),
+                  );
+            }
+          }
+        },
+        builder: (context, state) {
+          if (!tabControllerListenerSetted) {
+            tabControllerListenerSetted = true;
+            tabController.addListener(() {
+              if (!tabController.indexIsChanging) {
+                context.read<RecommendationBloc>().add(
+                      RecommendationIndexChangedEvent(
+                        tabController.index,
+                      ),
+                    );
+              }
+            });
+          }
+          return Scaffold(
+            backgroundColor: backgroundColor,
+            appBar: AppBar(
+              elevation: 0,
+              backgroundColor: primaryColor2.withOpacity(0.8),
+              title: AutoSizeText(
+                'Crop Sense',
+                maxLines: 1,
+                style: kHeading18.copyWith(color: backgroundColor),
               ),
-              DefaultTextBox(
-                key: const ValueKey("phLevel"),
-                hintText: 'pH Level of Soil',
-                labelText: 'pH Level',
-                icon: const Icon(
-                  Icons.nature_rounded,
-                  color: primaryColor2,
+              centerTitle: true,
+            ),
+            body: TabBarView(
+              controller: tabController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: displayWidth(context) * 0.06,
+                    vertical: 10,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: AutoSizeText(
+                              "Welcome to the Crop Recommendation Form!",
+                              style: kHeading22.copyWith(color: primaryColor2),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: AutoSizeText(
+                              "Our tool uses advanced algorithms to analyze various factors, including your city's location and climate, the pH level of your soil, and the levels of humidity, nitrogen, phosphorus, and potassium in your field. Based on this information, we can recommend the best crops for you to grow in your specific environment",
+                              style: kHeading16,
+                              minFontSize: 1,
+                              maxLines: 7,
+                              textAlign: TextAlign.justify,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: AutoSizeText(
+                              'Select the city from the dropdown below :',
+                              style: kHeading14,
+                              minFontSize: 1,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ),
+                        CSCPicker(
+                          layout: Layout.vertical,
+                          countryDropdownLabel: "*Country",
+                          stateDropdownLabel: "*State",
+                          cityDropdownLabel: "*City",
+                          disabledDropdownDecoration: BoxDecoration(
+                            color: primaryColor6,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          currentCity: cityName,
+                          flagState: CountryFlag.DISABLE,
+                          currentCountry: countryName,
+                          currentState: stateName,
+                          dropdownDecoration: BoxDecoration(
+                            color: primaryColor5,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          searchBarRadius: 16,
+                          onCityChanged: (value) {
+                            if (value != null) {
+                              context
+                                  .read<RecommendationBloc>()
+                                  .add(CityChangeEvent(value));
+                            }
+                          },
+                          onCountryChanged: (value) {
+                            context
+                                .read<RecommendationBloc>()
+                                .add(CountryChangeEvent(value));
+                          },
+                          onStateChanged: (value) {
+                            if (value != null) {
+                              context
+                                  .read<RecommendationBloc>()
+                                  .add(StateChangeEvent(value));
+                            }
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: CustomAnimatedButton(
+                            title: 'Next',
+                            height: 46,
+                            // backgroundColor: ,
+                            borderRadius: 25,
+                            width: displayWidth(context) * 0.5,
+                            onPressed: () {
+                              Future.delayed(const Duration(milliseconds: 600),
+                                  () {
+                                context.read<RecommendationBloc>().add(
+                                      NextButtonClickedEvent(
+                                        countryName,
+                                        cityName,
+                                        stateName,
+                                      ),
+                                    );
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                textEditingController: _phLevelController,
-                textInputType: TextInputType.number,
-                obscureText: false,
-                enabled: true,
-                backgroundColor: primaryColor5,
-              ),
-              DefaultTextBox(
-                key: const ValueKey("Humidity"),
-                hintText: 'Humidity',
-                labelText: 'Humidity',
-                icon: const Icon(
-                  Icons.water_drop_rounded,
-                  color: primaryColor2,
+                SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: displayWidth(context) * 0.1,
+                      vertical: 18,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        DefaultTextBox(
+                          key: const ValueKey("phLevel"),
+                          hintText: 'pH Level of Soil',
+                          labelText: 'pH Level',
+                          icon: const Icon(
+                            Icons.nature_rounded,
+                            color: primaryColor2,
+                          ),
+                          textEditingController: _phLevelController,
+                          textInputType: TextInputType.number,
+                          obscureText: false,
+                          enabled: true,
+                          backgroundColor: primaryColor5,
+                        ),
+                        DefaultTextBox(
+                          key: const ValueKey("Humidity"),
+                          hintText: 'Humidity',
+                          labelText: 'Humidity',
+                          icon: const Icon(
+                            Icons.water_drop_rounded,
+                            color: primaryColor2,
+                          ),
+                          textEditingController: _humidityController,
+                          textInputType: TextInputType.number,
+                          obscureText: false,
+                          enabled: true,
+                          backgroundColor: primaryColor5,
+                        ),
+                        DefaultTextBox(
+                          key: const ValueKey("NitrogenLevel"),
+                          hintText: 'Nitrogen Level',
+                          labelText: 'Nitrogen Level',
+                          icon: const Icon(
+                            Icons.gas_meter_rounded,
+                            color: primaryColor2,
+                          ),
+                          textEditingController: _nitrogenController,
+                          textInputType: TextInputType.number,
+                          obscureText: false,
+                          enabled: true,
+                          backgroundColor: primaryColor5,
+                        ),
+                        DefaultTextBox(
+                          key: const ValueKey("Phosphorus Level"),
+                          hintText: 'Phosphorus Level',
+                          labelText: 'Phosphorus Level',
+                          icon: const Icon(
+                            Icons.gas_meter_rounded,
+                            color: primaryColor2,
+                          ),
+                          textEditingController: _phosphorusController,
+                          textInputType: TextInputType.number,
+                          obscureText: false,
+                          enabled: true,
+                          backgroundColor: primaryColor5,
+                        ),
+                        DefaultTextBox(
+                          key: const ValueKey("Potassium Level"),
+                          hintText: 'Potassium Level',
+                          labelText: 'Potassium Level',
+                          icon: const Icon(
+                            Icons.gas_meter_rounded,
+                            color: primaryColor2,
+                          ),
+                          textEditingController: _potassiumController,
+                          textInputType: TextInputType.number,
+                          obscureText: false,
+                          enabled: true,
+                          backgroundColor: primaryColor5,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: CustomAnimatedButton(
+                            title: 'Submit',
+                            height: 46,
+                            borderRadius: 25,
+                            width: displayWidth(context) * 0.5,
+                            onPressed: () {
+                              Future.delayed(
+                                const Duration(milliseconds: 600),
+                                () {
+                                  context.read<RecommendationBloc>().add(
+                                        SubmitRecommendationFormClickedEvent(
+                                          humidtyLevel:
+                                              _humidityController.text,
+                                          nitrgoenLevel:
+                                              _nitrogenController.text,
+                                          phLevel: _phLevelController.text,
+                                          phosphorusLevel:
+                                              _phosphorusController.text,
+                                          potassiumLevel:
+                                              _potassiumController.text,
+                                        ),
+                                      );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                textEditingController: _humidityController,
-                textInputType: TextInputType.number,
-                obscureText: false,
-                enabled: true,
-                backgroundColor: primaryColor5,
-              ),
-              DefaultTextBox(
-                key: const ValueKey("NitrogenLevel"),
-                hintText: 'Nitrogen Level',
-                labelText: 'Nitrogen Level',
-                icon: const Icon(
-                  Icons.gas_meter_rounded,
-                  color: primaryColor2,
-                ),
-                textEditingController: _nitrogenController,
-                textInputType: TextInputType.number,
-                obscureText: false,
-                enabled: true,
-                backgroundColor: primaryColor5,
-              ),
-              DefaultTextBox(
-                key: const ValueKey("Phosphorus Level"),
-                hintText: 'Phosphorus Level',
-                labelText: 'Phosphorus Level',
-                icon: const Icon(
-                  Icons.gas_meter_rounded,
-                  color: primaryColor2,
-                ),
-                textEditingController: _phosphorusController,
-                textInputType: TextInputType.number,
-                obscureText: false,
-                enabled: true,
-                backgroundColor: primaryColor5,
-              ),
-              DefaultTextBox(
-                key: const ValueKey("Potassium Level"),
-                hintText: 'Potassium Level',
-                labelText: 'Potassium Level',
-                icon: const Icon(
-                  Icons.gas_meter_rounded,
-                  color: primaryColor2,
-                ),
-                textEditingController: _phosphorusController,
-                textInputType: TextInputType.number,
-                obscureText: false,
-                enabled: true,
-                backgroundColor: primaryColor5,
-              ),
-            ],
-          ),
-        ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
