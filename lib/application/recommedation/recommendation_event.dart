@@ -58,14 +58,14 @@ class ChangeTabIndexEvent extends RecommendationEvent {}
 
 class SubmitRecommendationFormClickedEvent extends RecommendationEvent {
   final String? phLevel;
-  final String? humidtyLevel;
+  final String? rainfallLevel;
   final String? nitrgoenLevel;
   final String? phosphorusLevel;
   final String? potassiumLevel;
 
   const SubmitRecommendationFormClickedEvent({
     required this.phLevel,
-    required this.humidtyLevel,
+    required this.rainfallLevel,
     required this.nitrgoenLevel,
     required this.phosphorusLevel,
     required this.potassiumLevel,
@@ -74,7 +74,7 @@ class SubmitRecommendationFormClickedEvent extends RecommendationEvent {
   @override
   List<Object> get props => [
         phLevel.toString(),
-        humidtyLevel.toString(),
+        rainfallLevel.toString(),
         nitrgoenLevel.toString(),
         phosphorusLevel.toString(),
         potassiumLevel.toString(),
@@ -86,7 +86,7 @@ class SubmitDataToBackendEvent extends RecommendationEvent {
   final String cityName;
   final String stateName;
   final String phLevel;
-  final String humidtyLevel;
+  final String rainfallLevel;
   final String nitrgoenLevel;
   final String phosphorusLevel;
   final String potassiumLevel;
@@ -96,7 +96,7 @@ class SubmitDataToBackendEvent extends RecommendationEvent {
     required this.stateName,
     required this.cityName,
     required this.phLevel,
-    required this.humidtyLevel,
+    required this.rainfallLevel,
     required this.nitrgoenLevel,
     required this.phosphorusLevel,
     required this.potassiumLevel,
@@ -108,7 +108,7 @@ class SubmitDataToBackendEvent extends RecommendationEvent {
         stateName,
         cityName,
         phLevel,
-        humidtyLevel,
+        rainfallLevel,
         nitrgoenLevel,
         phosphorusLevel,
         potassiumLevel,

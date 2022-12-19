@@ -70,14 +70,14 @@ class RecommendationIndexChangedState extends RecommendationState {
 
 class SubmitRecommendationFormClickedState extends RecommendationState {
   final String? phLevel;
-  final String? humidtyLevel;
+  final String? rainfallLevel;
   final String? nitrgoenLevel;
   final String? phosphorusLevel;
   final String? potassiumLevel;
 
   const SubmitRecommendationFormClickedState({
     required this.phLevel,
-    required this.humidtyLevel,
+    required this.rainfallLevel,
     required this.nitrgoenLevel,
     required this.phosphorusLevel,
     required this.potassiumLevel,
@@ -86,9 +86,29 @@ class SubmitRecommendationFormClickedState extends RecommendationState {
   @override
   List<Object> get props => [
         phLevel.toString(),
-        humidtyLevel.toString(),
+        rainfallLevel.toString(),
         nitrgoenLevel.toString(),
         phosphorusLevel.toString(),
         potassiumLevel.toString(),
       ];
+}
+
+class FetchRecommendedCropLoadingState extends RecommendationState {}
+
+class FetchRecommendedCropLoadedState extends RecommendationState {
+  final RecommendationResponse crop;
+
+  const FetchRecommendedCropLoadedState(this.crop);
+
+  @override
+  List<Object> get props => [crop];
+}
+
+class FetchRecommendedCropErrorState extends RecommendationState {
+  final String error;
+
+  const FetchRecommendedCropErrorState(this.error);
+
+  @override
+  List<Object> get props => [error];
 }

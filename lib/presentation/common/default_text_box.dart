@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../helpers/color_helper.dart';
-import '../../helpers/font_style_helper.dart';
-import '../../helpers/size_helper.dart';
+import '../helpers/color_helper.dart';
+import '../helpers/font_style_helper.dart';
 
 class DefaultTextBox extends StatefulWidget {
   final String hintText;
@@ -14,19 +13,21 @@ class DefaultTextBox extends StatefulWidget {
   final bool enabled;
   final Widget icon;
   final Color backgroundColor;
+  final FocusNode? focusNode;
 
-  const DefaultTextBox(
-      {Key? key,
-      required this.hintText,
-      required this.icon,
-      required this.labelText,
-      required this.textEditingController,
-      required this.textInputType,
-      required this.backgroundColor,
-      this.onChanged,
-      required this.obscureText,
-      required this.enabled})
-      : super(key: key);
+  const DefaultTextBox({
+    Key? key,
+    required this.hintText,
+    required this.icon,
+    required this.labelText,
+    required this.textEditingController,
+    required this.textInputType,
+    required this.backgroundColor,
+    this.onChanged,
+    required this.obscureText,
+    required this.enabled,
+    this.focusNode,
+  }) : super(key: key);
 
   @override
   _DefaultTextBoxState createState() => _DefaultTextBoxState();
@@ -53,6 +54,7 @@ class _DefaultTextBoxState extends State<DefaultTextBox> {
           enabled: widget.enabled,
           style: kHeading14,
           textAlignVertical: TextAlignVertical.center,
+          focusNode: widget.focusNode ?? FocusNode(),
           decoration: InputDecoration(
             hintText: widget.hintText,
             hintStyle: const TextStyle(

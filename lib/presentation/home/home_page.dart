@@ -4,11 +4,11 @@ import 'package:crop_sense/application/home_page/home_page_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../common/animated_button.dart';
+import '../common/home_carousel.dart';
 import '../helpers/color_helper.dart';
 import '../helpers/font_style_helper.dart';
 import '../helpers/size_helper.dart';
-import '../common/Widgets/common/animated_button.dart';
-import '../common/Widgets/home_carousel.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -115,12 +115,12 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: GestureDetector(
               onTap: () {
-                context
-                    .read<HomePageBloc>()
-                    .add(CropRecommendationClickedEvent());
+                context.read<HomePageBloc>().add(
+                      ContributeToUsButtonClickedEvent(),
+                    );
               },
               child: AutoSizeText(
-                'Get Crop Recommendation',
+                'Contribute to Us',
                 style: kHeading16.copyWith(
                   color: primaryColor1,
                   decoration: TextDecoration.underline,
@@ -142,14 +142,14 @@ class _HomePageState extends State<HomePage> {
             Future.delayed(
               const Duration(milliseconds: 600),
               () {
-                context.read<HomePageBloc>().add(
-                      ContributeToUsButtonClickedEvent(),
-                    );
+                context
+                    .read<HomePageBloc>()
+                    .add(CropRecommendationClickedEvent());
               },
             );
           },
-          title: 'Contribute to Us',
-          width: displayWidth(context) * 0.6,
+          title: 'Get Crop Recommendation',
+          width: displayWidth(context) * 0.8,
         ),
       ],
     );

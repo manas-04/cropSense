@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 
-import '../../../helpers/color_helper.dart';
-import '../../../helpers/font_style_helper.dart';
+import '../helpers/color_helper.dart';
+import '../helpers/font_style_helper.dart';
 
 class CustomAnimatedButton extends StatefulWidget {
   const CustomAnimatedButton({

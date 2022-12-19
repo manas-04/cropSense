@@ -1,5 +1,8 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:crop_sense/presentation/common/Widgets/common/animated_button.dart';
+import 'package:crop_sense/domain/recommendation/recommendation_response.dart';
+import 'package:crop_sense/presentation/common/error_text.dart';
+import 'package:crop_sense/presentation/common/recommendation_carousel.dart';
 import 'package:crop_sense/presentation/helpers/font_style_helper.dart';
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +10,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../application/recommedation/recommendation_bloc.dart';
-import '../common/Widgets/default_text_box.dart';
+import '../common/animated_button.dart';
+import '../common/default_text_box.dart';
+import '../common/loading_indicator.dart';
 import '../helpers/color_helper.dart';
 import '../helpers/size_helper.dart';
 
@@ -27,6 +32,8 @@ class _CropRecommendationsPageState extends State<CropRecommendationsPage>
   final TextEditingController _phosphorusController = TextEditingController();
   final TextEditingController _potassiumController = TextEditingController();
 
+  final FocusNode potassiumFocusNode = FocusNode();
+
   late TabController tabController = TabController(
     length: 2,
     vsync: this,
@@ -36,6 +43,22 @@ class _CropRecommendationsPageState extends State<CropRecommendationsPage>
   String? countryName;
   String? stateName;
   String? cityName;
+
+  bool isLoading = false;
+  bool isError = false;
+  String error = '';
+  RecommendationResponse? crop;
+  bool showResult = false;
+
+  @override
+  void dispose() {
+    _nitrogenController.dispose();
+    _phLevelController.dispose();
+    _phosphorusController.dispose();
+    _potassiumController.dispose();
+    _rainfallController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,13 +96,15 @@ class _CropRecommendationsPageState extends State<CropRecommendationsPage>
             tabController.index = 1;
           }
           if (state is SubmitRecommendationFormClickedState) {
+            potassiumFocusNode.unfocus();
             if (state.phLevel == null || state.phLevel == '') {
               Fluttertoast.showToast(
                 msg: 'Please enter phLevel of Soil!',
                 backgroundColor: errorColor,
                 textColor: backgroundColor,
               );
-            } else if (state.humidtyLevel == null || state.humidtyLevel == '') {
+            } else if (state.rainfallLevel == null ||
+                state.rainfallLevel == '') {
               Fluttertoast.showToast(
                 msg: 'Please enter rainfall level!',
                 backgroundColor: errorColor,
@@ -119,7 +144,7 @@ class _CropRecommendationsPageState extends State<CropRecommendationsPage>
                       cityName: cityName!,
                       countryName: countryName!,
                       stateName: stateName!,
-                      humidtyLevel: _rainfallController.text,
+                      rainfallLevel: _rainfallController.text,
                       nitrgoenLevel: _nitrogenController.text,
                       phLevel: _phLevelController.text,
                       phosphorusLevel: _phosphorusController.text,
@@ -127,6 +152,23 @@ class _CropRecommendationsPageState extends State<CropRecommendationsPage>
                     ),
                   );
             }
+          }
+          if (state is FetchRecommendedCropLoadingState) {
+            showResult = false;
+            isError = false;
+            isLoading = true;
+          }
+          if (state is FetchRecommendedCropErrorState) {
+            showResult = false;
+            error = state.error;
+            isError = true;
+            isLoading = false;
+          }
+          if (state is FetchRecommendedCropLoadedState) {
+            crop = state.crop;
+            showResult = true;
+            isError = false;
+            isLoading = false;
           }
         },
         builder: (context, state) {
@@ -263,121 +305,195 @@ class _CropRecommendationsPageState extends State<CropRecommendationsPage>
                             },
                           ),
                         ),
+                        const RecommendationPageCarousal(),
                       ],
                     ),
                   ),
                 ),
                 SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: displayWidth(context) * 0.1,
-                      vertical: 18,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        DefaultTextBox(
-                          key: const ValueKey("phLevel"),
-                          hintText: 'pH Level of Soil',
-                          labelText: 'pH Level',
-                          icon: const Icon(
-                            Icons.nature_rounded,
-                            color: primaryColor2,
+                  child: isError
+                      ? InkWell(
+                          onTap: () {
+                            context.read<RecommendationBloc>().add(
+                                  SubmitDataToBackendEvent(
+                                    cityName: cityName!,
+                                    countryName: countryName!,
+                                    stateName: stateName!,
+                                    rainfallLevel: _rainfallController.text,
+                                    nitrgoenLevel: _nitrogenController.text,
+                                    phLevel: _phLevelController.text,
+                                    phosphorusLevel: _phosphorusController.text,
+                                    potassiumLevel: _potassiumController.text,
+                                  ),
+                                );
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              top: displayHeight(context) * 0.4,
+                            ),
+                            child: ErrorText(
+                              error: error,
+                              showRetry: true,
+                            ),
                           ),
-                          textEditingController: _phLevelController,
-                          textInputType: TextInputType.number,
-                          obscureText: false,
-                          enabled: true,
-                          backgroundColor: primaryColor5,
-                        ),
-                        DefaultTextBox(
-                          key: const ValueKey("Rainfall"),
-                          hintText: 'Rainfall',
-                          labelText: 'Rainfall',
-                          icon: const Icon(
-                            Icons.water_drop_rounded,
-                            color: primaryColor2,
+                        )
+                      : Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: displayWidth(context) * 0.1,
+                            vertical: 18,
                           ),
-                          textEditingController: _rainfallController,
-                          textInputType: TextInputType.number,
-                          obscureText: false,
-                          enabled: true,
-                          backgroundColor: primaryColor5,
-                        ),
-                        DefaultTextBox(
-                          key: const ValueKey("NitrogenLevel"),
-                          hintText: 'Nitrogen Level',
-                          labelText: 'Nitrogen Level',
-                          icon: const Icon(
-                            Icons.gas_meter_rounded,
-                            color: primaryColor2,
-                          ),
-                          textEditingController: _nitrogenController,
-                          textInputType: TextInputType.number,
-                          obscureText: false,
-                          enabled: true,
-                          backgroundColor: primaryColor5,
-                        ),
-                        DefaultTextBox(
-                          key: const ValueKey("Phosphorus Level"),
-                          hintText: 'Phosphorus Level',
-                          labelText: 'Phosphorus Level',
-                          icon: const Icon(
-                            Icons.gas_meter_rounded,
-                            color: primaryColor2,
-                          ),
-                          textEditingController: _phosphorusController,
-                          textInputType: TextInputType.number,
-                          obscureText: false,
-                          enabled: true,
-                          backgroundColor: primaryColor5,
-                        ),
-                        DefaultTextBox(
-                          key: const ValueKey("Potassium Level"),
-                          hintText: 'Potassium Level',
-                          labelText: 'Potassium Level',
-                          icon: const Icon(
-                            Icons.gas_meter_rounded,
-                            color: primaryColor2,
-                          ),
-                          textEditingController: _potassiumController,
-                          textInputType: TextInputType.number,
-                          obscureText: false,
-                          enabled: true,
-                          backgroundColor: primaryColor5,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: CustomAnimatedButton(
-                            title: 'Submit',
-                            height: 46,
-                            borderRadius: 25,
-                            width: displayWidth(context) * 0.5,
-                            onPressed: () {
-                              Future.delayed(
-                                const Duration(milliseconds: 600),
-                                () {
-                                  context.read<RecommendationBloc>().add(
-                                        SubmitRecommendationFormClickedEvent(
-                                          humidtyLevel:
-                                              _rainfallController.text,
-                                          nitrgoenLevel:
-                                              _nitrogenController.text,
-                                          phLevel: _phLevelController.text,
-                                          phosphorusLevel:
-                                              _phosphorusController.text,
-                                          potassiumLevel:
-                                              _potassiumController.text,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              DefaultTextBox(
+                                key: const ValueKey("phLevel"),
+                                hintText: 'pH Level of Soil',
+                                labelText: 'pH Level',
+                                icon: const Icon(
+                                  Icons.nature_rounded,
+                                  color: primaryColor2,
+                                ),
+                                textEditingController: _phLevelController,
+                                textInputType: TextInputType.number,
+                                obscureText: false,
+                                enabled: true,
+                                backgroundColor: primaryColor5,
+                              ),
+                              DefaultTextBox(
+                                key: const ValueKey("Rainfall"),
+                                hintText: 'Rainfall',
+                                labelText: 'Rainfall',
+                                icon: const Icon(
+                                  Icons.water_drop_rounded,
+                                  color: primaryColor2,
+                                ),
+                                textEditingController: _rainfallController,
+                                textInputType: TextInputType.number,
+                                obscureText: false,
+                                enabled: true,
+                                backgroundColor: primaryColor5,
+                              ),
+                              DefaultTextBox(
+                                key: const ValueKey("NitrogenLevel"),
+                                hintText: 'Nitrogen Level',
+                                labelText: 'Nitrogen Level',
+                                icon: const Icon(
+                                  Icons.gas_meter_rounded,
+                                  color: primaryColor2,
+                                ),
+                                textEditingController: _nitrogenController,
+                                textInputType: TextInputType.number,
+                                obscureText: false,
+                                enabled: true,
+                                backgroundColor: primaryColor5,
+                              ),
+                              DefaultTextBox(
+                                key: const ValueKey("Phosphorus Level"),
+                                hintText: 'Phosphorus Level',
+                                labelText: 'Phosphorus Level',
+                                icon: const Icon(
+                                  Icons.gas_meter_rounded,
+                                  color: primaryColor2,
+                                ),
+                                textEditingController: _phosphorusController,
+                                textInputType: TextInputType.number,
+                                obscureText: false,
+                                enabled: true,
+                                backgroundColor: primaryColor5,
+                              ),
+                              DefaultTextBox(
+                                focusNode: potassiumFocusNode,
+                                key: const ValueKey("Potassium Level"),
+                                hintText: 'Potassium Level',
+                                labelText: 'Potassium Level',
+                                icon: const Icon(
+                                  Icons.gas_meter_rounded,
+                                  color: primaryColor2,
+                                ),
+                                textEditingController: _potassiumController,
+                                textInputType: TextInputType.number,
+                                obscureText: false,
+                                enabled: true,
+                                backgroundColor: primaryColor5,
+                              ),
+                              isLoading
+                                  ? Padding(
+                                      padding: EdgeInsets.only(
+                                        top: displayHeight(context) * 0.02,
+                                      ),
+                                      child: const LoadingIndicator(),
+                                    )
+                                  : showResult
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 14.0),
+                                          child: DefaultTextStyle(
+                                            style: kHeading16.copyWith(
+                                              color: primaryColor2,
+                                            ),
+                                            child: Align(
+                                              alignment: Alignment.topLeft,
+                                              child: AnimatedTextKit(
+                                                totalRepeatCount: 1,
+                                                animatedTexts: [
+                                                  TyperAnimatedText(
+                                                    'Best Recommended Crop according to these conditions is : ${crop!.predictedCrop}',
+                                                    speed: const Duration(
+                                                      milliseconds: 70,
+                                                    ),
+                                                    textStyle:
+                                                        kHeading18.copyWith(
+                                                      color: primaryColor1,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 20),
+                                          child: CustomAnimatedButton(
+                                            title: 'Submit',
+                                            height: 46,
+                                            borderRadius: 25,
+                                            width: displayWidth(context) * 0.5,
+                                            onPressed: () {
+                                              Future.delayed(
+                                                const Duration(
+                                                    milliseconds: 600),
+                                                () {
+                                                  context
+                                                      .read<
+                                                          RecommendationBloc>()
+                                                      .add(
+                                                        SubmitRecommendationFormClickedEvent(
+                                                          rainfallLevel:
+                                                              _rainfallController
+                                                                  .text,
+                                                          nitrgoenLevel:
+                                                              _nitrogenController
+                                                                  .text,
+                                                          phLevel:
+                                                              _phLevelController
+                                                                  .text,
+                                                          phosphorusLevel:
+                                                              _phosphorusController
+                                                                  .text,
+                                                          potassiumLevel:
+                                                              _potassiumController
+                                                                  .text,
+                                                        ),
+                                                      );
+                                                },
+                                              );
+                                            },
+                                          ),
                                         ),
-                                      );
-                                },
-                              );
-                            },
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
                 ),
               ],
             ),

@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/home_carousal_list.dart';
-import '../../helpers/size_helper.dart';
+import '../helpers/size_helper.dart';
 
 class HomeCarousal extends StatefulWidget {
   const HomeCarousal({super.key});

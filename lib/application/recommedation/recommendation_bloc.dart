@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:crop_sense/application/helpers/event.dart';
+import 'package:crop_sense/domain/recommendation/recommendation_response.dart';
+import 'package:crop_sense/infra/api_repository/main_api_respository.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logger/logger.dart';
@@ -10,6 +12,8 @@ part 'recommendation_event.dart';
 class RecommendationBloc
     extends Bloc<RecommendationEvent, RecommendationState> {
   RecommendationBloc(RecommendationState initstate) : super(initstate) {
+    final MainApiRepository apiRepository = MainApiRepository();
+
     on<RecommendationIndexChangedEvent>((event, emit) {
       emit(RecommendationIndexChangedState(event.index));
     });
@@ -40,7 +44,7 @@ class RecommendationBloc
     on<SubmitRecommendationFormClickedEvent>((event, emit) {
       emit(EmptyRecommendationState());
       emit(SubmitRecommendationFormClickedState(
-        humidtyLevel: event.humidtyLevel,
+        rainfallLevel: event.rainfallLevel,
         nitrgoenLevel: event.nitrgoenLevel,
         phLevel: event.phLevel,
         phosphorusLevel: event.phosphorusLevel,
@@ -48,29 +52,30 @@ class RecommendationBloc
       ));
     });
     on<SubmitDataToBackendEvent>((event, emit) async {
-      //Todo
-      var dio = Dio();
-
+      emit(FetchRecommendedCropLoadingState());
       int N = int.parse(event.nitrgoenLevel);
       int P = int.parse(event.phosphorusLevel);
       int K = int.parse(event.potassiumLevel);
-      double rainfall = double.parse(event.humidtyLevel);
+      double rainfall = double.parse(event.rainfallLevel);
       String city = event.cityName.toLowerCase();
       double ph = double.parse(event.phLevel);
 
-      var response = await dio.get(
-          "https://minor-project-server.onrender.com/crop-predict",
-          queryParameters: {
-            "N": N,
-            "P": P,
-            "K": K,
-            "ph": ph,
-            "rainfall": rainfall,
-            "city": city,
-          },
-      );
+      try {
+        final RecommendationResponse response =
+            await apiRepository.getRecommededCrop(
+          n: N,
+          p: P,
+          k: K,
+          rainfall: rainfall,
+          city: city,
+          ph: ph,
+        );
+        Logger().d('Dataaaaaaa $response');
+        emit(FetchRecommendedCropLoadedState(response));
+      } catch (e) {
+        emit(FetchRecommendedCropErrorState(e.toString()));
+      }
 
-      print("${response.data}");
       // example - "{prediction: mango}"
     });
   }
