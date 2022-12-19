@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:crop_sense/application/helpers/event.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
 
 part 'recommendation_state.dart';
 part 'recommendation_event.dart';
@@ -45,7 +47,7 @@ class RecommendationBloc
         potassiumLevel: event.potassiumLevel,
       ));
     });
-    on<SubmitDataToBackendEvent>((event, emit) {
+    on<SubmitDataToBackendEvent>((event, emit) async {
       //Todo
     });
   }
