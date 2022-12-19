@@ -49,6 +49,29 @@ class RecommendationBloc
     });
     on<SubmitDataToBackendEvent>((event, emit) async {
       //Todo
+      var dio = Dio();
+
+      int N = int.parse(event.nitrgoenLevel);
+      int P = int.parse(event.phosphorusLevel);
+      int K = int.parse(event.potassiumLevel);
+      double rainfall = double.parse(event.humidtyLevel);
+      String city = event.cityName.toLowerCase();
+      double ph = double.parse(event.phLevel);
+
+      var response = await dio.get(
+          "https://minor-project-server.onrender.com/crop-predict",
+          queryParameters: {
+            "N": N,
+            "P": P,
+            "K": K,
+            "ph": ph,
+            "rainfall": rainfall,
+            "city": city,
+          },
+      );
+
+      print("${response.data}");
+      // example - "{prediction: mango}"
     });
   }
 }
