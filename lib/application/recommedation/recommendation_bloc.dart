@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:crop_sense/application/helpers/event.dart';
 import 'package:crop_sense/domain/recommendation/recommendation_response.dart';
 import 'package:crop_sense/infra/api_repository/main_api_respository.dart';
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logger/logger.dart';
 

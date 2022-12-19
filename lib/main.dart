@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:crop_sense/application/home_page/home_page_bloc.dart';
 import 'package:crop_sense/routes/routes.generator.dart';
 import 'package:crop_sense/simple_bloc_observer.dart';
@@ -34,6 +33,7 @@ class MyApp extends StatelessWidget {
       ],
       child: Listener(
         child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
           getPages: RouteGenerator.pages,
           initialRoute: "/",
           title: 'CropSense',
