@@ -21,7 +21,7 @@ class CropRecommendationsPage extends StatefulWidget {
 
 class _CropRecommendationsPageState extends State<CropRecommendationsPage>
     with SingleTickerProviderStateMixin {
-  final TextEditingController _humidityController = TextEditingController();
+  final TextEditingController _rainfallController = TextEditingController();
   final TextEditingController _phLevelController = TextEditingController();
   final TextEditingController _nitrogenController = TextEditingController();
   final TextEditingController _phosphorusController = TextEditingController();
@@ -81,7 +81,7 @@ class _CropRecommendationsPageState extends State<CropRecommendationsPage>
               );
             } else if (state.humidtyLevel == null || state.humidtyLevel == '') {
               Fluttertoast.showToast(
-                msg: 'Please enter humidity level!',
+                msg: 'Please enter rainfall level!',
                 backgroundColor: errorColor,
                 textColor: backgroundColor,
               );
@@ -119,7 +119,7 @@ class _CropRecommendationsPageState extends State<CropRecommendationsPage>
                       cityName: cityName!,
                       countryName: countryName!,
                       stateName: stateName!,
-                      humidtyLevel: _humidityController.text,
+                      humidtyLevel: _rainfallController.text,
                       nitrgoenLevel: _nitrogenController.text,
                       phLevel: _phLevelController.text,
                       phosphorusLevel: _phosphorusController.text,
@@ -181,7 +181,7 @@ class _CropRecommendationsPageState extends State<CropRecommendationsPage>
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
                             child: AutoSizeText(
-                              "Our tool uses advanced algorithms to analyze various factors, including your city's location and climate, the pH level of your soil, and the levels of humidity, nitrogen, phosphorus, and potassium in your field. Based on this information, we can recommend the best crops for you to grow in your specific environment",
+                              "Our tool uses advanced algorithms to analyze various factors, including your city's location and climate, the pH level of your soil, and the levels of rainfall, nitrogen, phosphorus, and potassium in your field. Based on this information, we can recommend the best crops for you to grow in your specific environment",
                               style: kHeading16,
                               minFontSize: 1,
                               maxLines: 7,
@@ -291,14 +291,14 @@ class _CropRecommendationsPageState extends State<CropRecommendationsPage>
                           backgroundColor: primaryColor5,
                         ),
                         DefaultTextBox(
-                          key: const ValueKey("Humidity"),
-                          hintText: 'Humidity',
-                          labelText: 'Humidity',
+                          key: const ValueKey("Rainfall"),
+                          hintText: 'Rainfall',
+                          labelText: 'Rainfall',
                           icon: const Icon(
                             Icons.water_drop_rounded,
                             color: primaryColor2,
                           ),
-                          textEditingController: _humidityController,
+                          textEditingController: _rainfallController,
                           textInputType: TextInputType.number,
                           obscureText: false,
                           enabled: true,
@@ -360,7 +360,7 @@ class _CropRecommendationsPageState extends State<CropRecommendationsPage>
                                   context.read<RecommendationBloc>().add(
                                         SubmitRecommendationFormClickedEvent(
                                           humidtyLevel:
-                                              _humidityController.text,
+                                              _rainfallController.text,
                                           nitrgoenLevel:
                                               _nitrogenController.text,
                                           phLevel: _phLevelController.text,
