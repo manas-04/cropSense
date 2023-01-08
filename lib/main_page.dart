@@ -39,14 +39,16 @@ class _MainPageState extends State<MainPage> {
         listener: (context, state) async {
           if (state is ContributeToUsButtonClickedState) {
             Fluttertoast.showToast(
-              msg: "Work under progress!!",
+              msg: "Work under progress!",
               toastLength: Toast.LENGTH_LONG,
               backgroundColor: Colors.grey.shade300,
               textColor: primaryColor2,
             );
           }
-          if (state is CropRecommendationClickedState) {
-            Navigator.of(context).pushNamed(Routes.cropRecommendation);
+          if (state is CropRecommendationFeatureClickedState) {
+            //TODO
+            //Show Pop up
+            // Navigator.of(context).pushNamed(Routes.cropRecommendation);
           }
           if (state is LetsExploreClickedState) {
             Navigator.of(context).pushNamed(Routes.featuresPage);

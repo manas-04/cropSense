@@ -15,7 +15,7 @@ class LetsExploreClickedState extends HomePageState {}
 
 class ContributeToUsButtonClickedState extends HomePageState {}
 
-class CropRecommendationClickedState extends HomePageState {}
+class CropRecommendationFeatureClickedState extends HomePageState {}
 
 class PlantsIOTImageClickedState extends HomePageState {}
 

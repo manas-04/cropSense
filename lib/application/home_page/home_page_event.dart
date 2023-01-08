@@ -8,7 +8,7 @@ class LetsExploreClickedEvent extends HomePageEvent {}
 
 class ContributeToUsButtonClickedEvent extends HomePageEvent {}
 
-class CropRecommendationClickedEvent extends HomePageEvent {}
+class CropRecommendationFeatureClickedEvent extends HomePageEvent {}
 
 class PlantsIOTImageClickedEvent extends HomePageEvent {}
 
