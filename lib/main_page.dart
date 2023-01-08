@@ -4,6 +4,7 @@ import 'package:crop_sense/application/home_page/home_page_bloc.dart';
 import 'package:crop_sense/presentation/helpers/color_helper.dart';
 import 'package:crop_sense/presentation/helpers/size_helper.dart';
 import 'package:crop_sense/presentation/home/home_page.dart';
+import 'package:crop_sense/presentation/side_drawer/side_drawer.dart';
 import 'package:crop_sense/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const SideDrawer(),
       backgroundColor: backgroundColor,
       appBar: AppBar(
         elevation: 0,

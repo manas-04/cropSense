@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage> {
               },
             );
           },
-          title: 'Get Started',
+          title: "Let's explore",
           width: displayWidth(context) * 0.8,
         ),
       ],
