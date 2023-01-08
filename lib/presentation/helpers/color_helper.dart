@@ -14,3 +14,7 @@ const Color primaryDarkTextColor = Color(0xFF1F5F34);
 const Color secondaryTextColor = Colors.grey;
 
 const Color errorColor = Colors.red;
+
+const Color textColor1 = Color(0xFF3F3F3F);
+const Color textColor2 = Color(0xFF666666);
+const Color textColor3 = Color(0xFF8C8C8C);

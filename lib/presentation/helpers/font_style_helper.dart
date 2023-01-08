@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'color_helper.dart';
+
 TextStyle kHeading10 = const TextStyle(
   fontFamily: "Poppins",
   fontSize: 10,
@@ -40,4 +42,11 @@ TextStyle kHeading22 = const TextStyle(
   fontSize: 22,
   fontWeight: FontWeight.w400,
   color: Colors.black,
+);
+
+TextStyle s16kPcw400 = const TextStyle(
+  fontFamily: "Poppins",
+  fontSize: 16,
+  color: primaryColor2,
+  fontWeight: FontWeight.w400,
 );

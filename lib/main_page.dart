@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:crop_sense/application/helpers/external_link_launcher.dart';
 import 'package:crop_sense/application/home_page/home_page_bloc.dart';
+import 'package:crop_sense/presentation/common/primary_button.dart';
 import 'package:crop_sense/presentation/helpers/color_helper.dart';
 import 'package:crop_sense/presentation/helpers/size_helper.dart';
 import 'package:crop_sense/presentation/home/home_page.dart';
@@ -9,6 +10,7 @@ import 'package:crop_sense/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 
 import 'presentation/helpers/font_style_helper.dart';
 
@@ -46,9 +48,72 @@ class _MainPageState extends State<MainPage> {
             );
           }
           if (state is CropRecommendationFeatureClickedState) {
-            //TODO
-            //Show Pop up
-            // Navigator.of(context).pushNamed(Routes.cropRecommendation);
+            await Get.dialog(
+              Center(
+                child: SizedBox(
+                  height: 220,
+                  width: displayWidth(context) * 0.8,
+                  child: Material(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(Icons.close),
+                              ),
+                            ),
+                          ],
+                        ),
+                        AutoSizeText(
+                          "Please select one option to conitnue",
+                          style: kHeading14,
+                          maxLines: 2,
+                          minFontSize: 1,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: displayWidth(context) * 0.08,
+                            vertical: 4,
+                          ),
+                          child: PrimaryButton(
+                            title: "Take Data from Sensor",
+                            onPressed: () {},
+                            elevation: 0,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: displayWidth(context) * 0.08,
+                            vertical: 4,
+                          ),
+                          child: PrimaryButton(
+                            title: "Enter your own Data",
+                            onPressed: () {},
+                            color: Colors.white,
+                            textColor: Colors.black,
+                            elevation: 0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
           }
           if (state is LetsExploreClickedState) {
             Navigator.of(context).pushNamed(Routes.featuresPage);
