@@ -41,26 +41,38 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Flexible(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                ),
-                child: Image.asset(
-                  "assets/images/logoiot.png",
-                  fit: BoxFit.contain,
-                  width: displayWidth(context) * 0.27,
+              child: GestureDetector(
+                onTap: () {
+                  context
+                      .read<HomePageBloc>()
+                      .add(PlantsIOTImageClickedEvent());
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: Image.asset(
+                    "assets/images/logoiot.png",
+                    fit: BoxFit.contain,
+                    width: displayWidth(context) * 0.27,
+                  ),
                 ),
               ),
             ),
             Flexible(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                ),
-                child: Image.asset(
-                  "assets/images/ggsipu.png",
-                  width: displayWidth(context) * 0.3,
-                  fit: BoxFit.contain,
+              child: GestureDetector(
+                onTap: () {
+                  context.read<HomePageBloc>().add(IPULogoClickedEvent());
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: Image.asset(
+                    "assets/images/ggsipu.png",
+                    width: displayWidth(context) * 0.3,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ),
@@ -110,31 +122,49 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(
           height: 18,
         ),
-        Flexible(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: GestureDetector(
-              onTap: () {
-                context.read<HomePageBloc>().add(
-                      ContributeToUsButtonClickedEvent(),
-                    );
-              },
-              child: AutoSizeText(
-                'Contribute to Us',
-                style: kHeading16.copyWith(
-                  color: primaryColor1,
-                  decoration: TextDecoration.underline,
-                ),
-                maxLines: 1,
-                minFontSize: 1,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
+
+        // Flexible(
+        //   child: Padding(
+        //     padding: const EdgeInsets.symmetric(vertical: 8.0),
+        //     child: GestureDetector(
+        //       onTap: () {
+        //         context.read<HomePageBloc>().add(
+        //               ContributeToUsButtonClickedEvent(),
+        //             );
+        //       },
+        //       child: AutoSizeText(
+        //         'Contribute to Us',
+        //         style: kHeading16.copyWith(
+        //           color: primaryColor1,
+        //           decoration: TextDecoration.underline,
+        //         ),
+        //         maxLines: 1,
+        //         minFontSize: 1,
+        //         textAlign: TextAlign.center,
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        // const SizedBox(
+        //   height: 10,
+        // ),
+        // CustomAnimatedButton(
+        //   height: 50,
+        //   borderRadius: 30,
+        //   onPressed: () {
+        //     Future.delayed(
+        //       const Duration(milliseconds: 600),
+        //       () {
+        //         context
+        //             .read<HomePageBloc>()
+        //             .add(CropRecommendationClickedEvent());
+        //       },
+        //     );
+        //   },
+        //   title: 'Get Crop Recommendation',
+        //   width: displayWidth(context) * 0.8,
+        // ),
+
         CustomAnimatedButton(
           height: 50,
           borderRadius: 30,
@@ -142,13 +172,13 @@ class _HomePageState extends State<HomePage> {
             Future.delayed(
               const Duration(milliseconds: 600),
               () {
-                context
-                    .read<HomePageBloc>()
-                    .add(CropRecommendationClickedEvent());
+                // context
+                //     .read<HomePageBloc>()
+                //     .add(CropRecommendationClickedEvent());
               },
             );
           },
-          title: 'Get Crop Recommendation',
+          title: 'Get Started',
           width: displayWidth(context) * 0.8,
         ),
       ],

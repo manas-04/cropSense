@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:crop_sense/application/helpers/external_link_launcher.dart';
 import 'package:crop_sense/application/home_page/home_page_bloc.dart';
 import 'package:crop_sense/presentation/helpers/color_helper.dart';
 import 'package:crop_sense/presentation/helpers/size_helper.dart';
@@ -33,7 +34,7 @@ class _MainPageState extends State<MainPage> {
         centerTitle: true,
       ),
       body: BlocConsumer<HomePageBloc, HomePageState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is ContributeToUsButtonClickedState) {
             Fluttertoast.showToast(
               msg: "Work under progress!!",
@@ -44,6 +45,12 @@ class _MainPageState extends State<MainPage> {
           }
           if (state is CropRecommendationClickedState) {
             Navigator.pushNamed(context, Routes.cropRecommendation);
+          }
+          if (state is PlantsIOTImageClickedState) {
+            await launchUrl("http://www.plantiot-ipu.in/");
+          }
+          if (state is IPULogoClickedState) {
+            await launchUrl("http://www.ipu.ac.in/");
           }
         },
         builder: (context, state) {

@@ -14,3 +14,7 @@ class EmptyHomePageState extends HomePageState {}
 class ContributeToUsButtonClickedState extends HomePageState {}
 
 class CropRecommendationClickedState extends HomePageState {}
+
+class PlantsIOTImageClickedState extends HomePageState {}
+
+class IPULogoClickedState extends HomePageState {}

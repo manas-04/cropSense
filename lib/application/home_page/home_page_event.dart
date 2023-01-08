@@ -7,3 +7,7 @@ abstract class HomePageEvent extends Event {
 class ContributeToUsButtonClickedEvent extends HomePageEvent {}
 
 class CropRecommendationClickedEvent extends HomePageEvent {}
+
+class PlantsIOTImageClickedEvent extends HomePageEvent {}
+
+class IPULogoClickedEvent extends HomePageEvent {}

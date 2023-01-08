@@ -15,5 +15,13 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       emit(EmptyHomePageState());
       emit(CropRecommendationClickedState());
     });
+    on<PlantsIOTImageClickedEvent>((event, emit) {
+      emit(EmptyHomePageState());
+      emit(PlantsIOTImageClickedState());
+    });
+    on<IPULogoClickedEvent>((event, emit) {
+      emit(EmptyHomePageState());
+      emit(IPULogoClickedState());
+    });
   }
 }

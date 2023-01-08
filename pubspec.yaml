@@ -50,6 +50,7 @@ dependencies:
   fluttertoast: ^8.0.8
   csc_picker: ^0.2.6
   dio: ^4.0.6
+  url_launcher: ^6.1.7
 
 flutter_icons:
   android: true

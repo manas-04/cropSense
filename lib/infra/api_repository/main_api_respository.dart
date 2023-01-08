@@ -7,8 +7,8 @@ import '../helper/error_handler.dart';
 
 class MainApiRepository implements IMainApiRepository {
   final BaseOptions options = BaseOptions(
-    receiveTimeout: 10000,
-    connectTimeout: 10000,
+    receiveTimeout: 20000,
+    connectTimeout: 20000,
     receiveDataWhenStatusError: true,
     contentType: "application/json",
     headers: {"accept-version": '1.0.0'},
