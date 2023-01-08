@@ -11,6 +11,8 @@ class HomePageInitState extends HomePageState {}
 
 class EmptyHomePageState extends HomePageState {}
 
+class LetsExploreClickedState extends HomePageState {}
+
 class ContributeToUsButtonClickedState extends HomePageState {}
 
 class CropRecommendationClickedState extends HomePageState {}

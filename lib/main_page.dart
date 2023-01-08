@@ -46,7 +46,10 @@ class _MainPageState extends State<MainPage> {
             );
           }
           if (state is CropRecommendationClickedState) {
-            Navigator.pushNamed(context, Routes.cropRecommendation);
+            Navigator.of(context).pushNamed(Routes.cropRecommendation);
+          }
+          if (state is LetsExploreClickedState) {
+            Navigator.of(context).pushNamed(Routes.featuresPage);
           }
           if (state is PlantsIOTImageClickedState) {
             await launchUrl("http://www.plantiot-ipu.in/");

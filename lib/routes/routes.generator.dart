@@ -1,3 +1,4 @@
+import 'package:crop_sense/presentation/features/features_page.dart';
 import 'package:crop_sense/routes/routes.dart';
 import 'package:get/route_manager.dart';
 
@@ -13,6 +14,11 @@ class RouteGenerator {
     GetPage(
       name: Routes.cropRecommendation,
       page: () => const CropRecommendationsPage(),
+      transition: Transition.cupertino,
+    ),
+    GetPage(
+      name: Routes.featuresPage,
+      page: () => const FeaturePage(),
       transition: Transition.cupertino,
     ),
   ];

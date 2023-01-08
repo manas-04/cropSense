@@ -4,6 +4,8 @@ abstract class HomePageEvent extends Event {
   const HomePageEvent();
 }
 
+class LetsExploreClickedEvent extends HomePageEvent {}
+
 class ContributeToUsButtonClickedEvent extends HomePageEvent {}
 
 class CropRecommendationClickedEvent extends HomePageEvent {}

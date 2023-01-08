@@ -172,9 +172,7 @@ class _HomePageState extends State<HomePage> {
             Future.delayed(
               const Duration(milliseconds: 600),
               () {
-                // context
-                //     .read<HomePageBloc>()
-                //     .add(CropRecommendationClickedEvent());
+                context.read<HomePageBloc>().add(LetsExploreClickedEvent());
               },
             );
           },
