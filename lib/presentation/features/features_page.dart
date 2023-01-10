@@ -35,7 +35,9 @@ class _FeaturePageState extends State<FeaturePage> {
             subTitle:
                 "This feature allows you to upload a photo of a plant or plant part and get a diagnosis of any potential diseases affecting the plant.",
             image: "assets/images/diseasedPlant.png",
-            ontap: () {},
+            ontap: () {
+              context.read<HomePageBloc>().add(DiseaseDetectionClickedEvent());
+            },
           ),
           FeatureCard(
             title: "Plant Recommendation",

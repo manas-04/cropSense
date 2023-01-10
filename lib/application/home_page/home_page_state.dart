@@ -20,3 +20,16 @@ class CropRecommendationFeatureClickedState extends HomePageState {}
 class PlantsIOTImageClickedState extends HomePageState {}
 
 class IPULogoClickedState extends HomePageState {}
+
+class DiseaseDetectionClickedState extends HomePageState {}
+
+class ChooseFileButtonClickedState extends HomePageState {}
+
+class FileSelectedState extends HomePageState {
+  final File selectedImage;
+
+  const FileSelectedState(this.selectedImage);
+
+  @override
+  List<Object> get props => [selectedImage.toString()];
+}

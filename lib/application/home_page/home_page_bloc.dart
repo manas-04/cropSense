@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:crop_sense/application/helpers/event.dart';
 import 'package:equatable/equatable.dart';
@@ -26,6 +29,17 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     on<IPULogoClickedEvent>((event, emit) {
       emit(EmptyHomePageState());
       emit(IPULogoClickedState());
+    });
+    on<DiseaseDetectionClickedEvent>((event, emit) {
+      emit(EmptyHomePageState());
+      emit(DiseaseDetectionClickedState());
+    });
+    on<ChooseFileButtonClickedEvent>((event, emit) {
+      emit(EmptyHomePageState());
+      emit(ChooseFileButtonClickedState());
+    });
+    on<FileSelectedEvent>((event, emit) {
+      emit(FileSelectedState(event.selectedImage));
     });
   }
 }

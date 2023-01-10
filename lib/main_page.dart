@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:crop_sense/application/helpers/external_link_launcher.dart';
 import 'package:crop_sense/application/home_page/home_page_bloc.dart';
 import 'package:crop_sense/presentation/common/primary_button.dart';
+import 'package:crop_sense/presentation/common/show_media_popup.dart';
 import 'package:crop_sense/presentation/helpers/color_helper.dart';
 import 'package:crop_sense/presentation/helpers/size_helper.dart';
 import 'package:crop_sense/presentation/home/home_page.dart';
@@ -123,6 +126,18 @@ class _MainPageState extends State<MainPage> {
           }
           if (state is IPULogoClickedState) {
             await launchUrl("http://www.ipu.ac.in/");
+          }
+          if (state is DiseaseDetectionClickedState) {
+            Navigator.of(context).pushNamed(Routes.diseaseDetectionPage);
+          }
+          if (state is ChooseFileButtonClickedState) {
+            showMediaPopup(
+              onImage: (File? image) async {
+                if (image != null) {
+                  context.read<HomePageBloc>().add(FileSelectedEvent(image));
+                }
+              },
+            );
           }
         },
         builder: (context, state) {
