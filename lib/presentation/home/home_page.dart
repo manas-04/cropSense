@@ -164,7 +164,9 @@ class _HomePageState extends State<HomePage> {
         //   title: 'Get Crop Recommendation',
         //   width: displayWidth(context) * 0.8,
         // ),
-
+        const SizedBox(
+          height: 10,
+        ),
         CustomAnimatedButton(
           height: 50,
           borderRadius: 30,

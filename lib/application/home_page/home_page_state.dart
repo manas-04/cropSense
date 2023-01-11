@@ -11,6 +11,26 @@ class HomePageInitState extends HomePageState {}
 
 class EmptyHomePageState extends HomePageState {}
 
+class PredictLoadingState extends HomePageState {}
+
+class PredictionErrorState extends HomePageState {
+  final String error;
+
+  const PredictionErrorState(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
+class PredictionSuccessfulState extends HomePageState {
+  final String answer;
+
+  const PredictionSuccessfulState(this.answer);
+
+  @override
+  List<Object> get props => [answer];
+}
+
 class LetsExploreClickedState extends HomePageState {}
 
 class ContributeToUsButtonClickedState extends HomePageState {}

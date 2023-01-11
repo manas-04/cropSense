@@ -76,6 +76,7 @@ class _CropRecommendationsPageState extends State<CropRecommendationsPage>
             cityName = state.cityName;
           }
           if (state is NextButtonClickedState) {
+            Fluttertoast.cancel();
             if (state.countryName == null || state.countryName == '') {
               Fluttertoast.showToast(
                 msg: 'Please enter country name!',
@@ -97,6 +98,7 @@ class _CropRecommendationsPageState extends State<CropRecommendationsPage>
           }
           if (state is SubmitRecommendationFormClickedState) {
             potassiumFocusNode.unfocus();
+            Fluttertoast.cancel();
             if (state.phLevel == null || state.phLevel == '') {
               Fluttertoast.showToast(
                 msg: 'Please enter phLevel of Soil!',

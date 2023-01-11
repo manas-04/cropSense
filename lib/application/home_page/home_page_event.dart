@@ -26,3 +26,12 @@ class FileSelectedEvent extends HomePageEvent {
   @override
   List<Object> get props => [selectedImage.toString()];
 }
+
+class PredictClickedEvent extends HomePageEvent {
+  final File selectedImage;
+
+  const PredictClickedEvent(this.selectedImage);
+
+  @override
+  List<Object> get props => [selectedImage.toString()];
+}

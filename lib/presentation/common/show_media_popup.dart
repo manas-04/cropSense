@@ -85,9 +85,9 @@ Future<File?> compressImage(File file) async {
   final compressedImage = await FlutterImageCompress.compressAndGetFile(
     currentPath,
     outputPath,
-    minWidth: 256,
-    minHeight: 256,
-    quality: 95,
+    minWidth: 224,
+    minHeight: 224,
+    quality: 100,
   );
 
   return compressedImage;

@@ -43,6 +43,7 @@ class _MainPageState extends State<MainPage> {
       body: BlocConsumer<HomePageBloc, HomePageState>(
         listener: (context, state) async {
           if (state is ContributeToUsButtonClickedState) {
+            Fluttertoast.cancel();
             Fluttertoast.showToast(
               msg: "Work under progress!",
               toastLength: Toast.LENGTH_LONG,

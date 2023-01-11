@@ -1,3 +1,5 @@
+import 'dart:io';
+
 abstract class IMainApiRepository<T> {
   Future<T> getRecommededCrop({
     required int n,
@@ -7,4 +9,6 @@ abstract class IMainApiRepository<T> {
     required String city,
     required double ph,
   });
+
+  Future<T> predictPlantDisease({required File picture});
 }

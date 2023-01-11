@@ -6,6 +6,7 @@ import 'package:crop_sense/presentation/common/primary_button.dart';
 import 'package:crop_sense/presentation/helpers/size_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../helpers/color_helper.dart';
 import '../helpers/font_style_helper.dart';
@@ -19,6 +20,8 @@ class DiseaseDetectionScreen extends StatefulWidget {
 
 class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen> {
   File? selectedImage;
+  bool isPredictionLoading = false;
+  bool predictedOnce = false;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,22 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen> {
       listener: (context, state) {
         if (state is FileSelectedState) {
           selectedImage = state.selectedImage;
+        }
+        if (state is PredictLoadingState) {
+          isPredictionLoading = true;
+        }
+        if (state is PredictionErrorState) {
+          isPredictionLoading = false;
+          Fluttertoast.cancel();
+          Fluttertoast.showToast(msg: state.error);
+        }
+        if (state is PredictionSuccessfulState) {
+          predictedOnce = true;
+          isPredictionLoading = false;
+          Fluttertoast.showToast(
+            msg: "Predicted Result : ${state.answer}",
+            toastLength: Toast.LENGTH_LONG,
+          );
         }
       },
       builder: (context, state) {
@@ -84,7 +103,8 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen> {
                     height: 20,
                   ),
                   PrimaryButton(
-                    title: "Choose File",
+                    title:
+                        predictedOnce ? "Choose Another File" : "Choose File",
                     onPressed: () {
                       context
                           .read<HomePageBloc>()
@@ -121,10 +141,32 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  PrimaryButton(
-                    title: "Predict",
-                    onPressed: selectedImage != null ? () {} : null,
-                  ),
+                  isPredictionLoading
+                      ? Center(
+                          child: Column(
+                          children: [
+                            const CircularProgressIndicator(),
+                            const SizedBox(
+                              height: 14,
+                            ),
+                            AutoSizeText(
+                              "Please be Paitent, this will take some time",
+                              style: kHeading14,
+                              maxLines: 1,
+                              minFontSize: 1,
+                            )
+                          ],
+                        ))
+                      : PrimaryButton(
+                          title: predictedOnce ? "Predict Again" : "Predict",
+                          onPressed: selectedImage != null
+                              ? () {
+                                  context
+                                      .read<HomePageBloc>()
+                                      .add(PredictClickedEvent(selectedImage!));
+                                }
+                              : null,
+                        ),
                 ],
               ),
             ),

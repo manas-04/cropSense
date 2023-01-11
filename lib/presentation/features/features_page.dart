@@ -30,6 +30,9 @@ class _FeaturePageState extends State<FeaturePage> {
       ),
       body: ListView(
         children: [
+          const SizedBox(
+            height: 20,
+          ),
           FeatureCard(
             title: "Plant Disease Detection",
             subTitle:
