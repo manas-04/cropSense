@@ -35,3 +35,7 @@ class PredictClickedEvent extends HomePageEvent {
   @override
   List<Object> get props => [selectedImage.toString()];
 }
+
+class TakeDataFromSensorClickedEvent extends HomePageEvent {}
+
+class FetchDataFromSensor extends HomePageEvent {}

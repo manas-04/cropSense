@@ -11,6 +11,26 @@ class HomePageInitState extends HomePageState {}
 
 class EmptyHomePageState extends HomePageState {}
 
+class DataFromSensorLoadingState extends HomePageState {}
+
+class DataFromSensorLoadedState extends HomePageState {
+  final SensorDataResponse data;
+
+  const DataFromSensorLoadedState(this.data);
+
+  @override
+  List<Object> get props => [data];
+}
+
+class DataFromSensorErrorState extends HomePageState {
+  final String error;
+
+  const DataFromSensorErrorState(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
 class PredictLoadingState extends HomePageState {}
 
 class PredictionErrorState extends HomePageState {
@@ -53,3 +73,5 @@ class FileSelectedState extends HomePageState {
   @override
   List<Object> get props => [selectedImage.toString()];
 }
+
+class TakeDataFromSensorClickedState extends HomePageState {}

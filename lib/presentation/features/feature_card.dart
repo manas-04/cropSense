@@ -68,7 +68,7 @@ class _FeatureCardState extends State<FeatureCard> {
                     Flexible(
                       child: AutoSizeText(
                         widget.title,
-                        style: kHeading14,
+                        style: kHeading16,
                         maxLines: 1,
                         minFontSize: 1,
                       ),

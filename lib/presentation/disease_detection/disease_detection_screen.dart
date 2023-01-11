@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:crop_sense/application/home_page/home_page_bloc.dart';
+import 'package:crop_sense/presentation/common/lottie_animator.dart';
 import 'package:crop_sense/presentation/common/primary_button.dart';
 import 'package:crop_sense/presentation/helpers/size_helper.dart';
 import 'package:flutter/material.dart';
@@ -91,11 +92,21 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen> {
                                 fit: BoxFit.cover,
                               ),
                             )
-                          : const Center(
-                              child: Icon(
-                                Icons.add_circle_outline_rounded,
-                                size: 40,
-                              ),
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.add_circle_outline_rounded,
+                                  size: 40,
+                                ),
+                                const SizedBox(
+                                  height: 18,
+                                ),
+                                AutoSizeText(
+                                  "No Image is selected yet!",
+                                  style: kHeading14,
+                                )
+                              ],
                             ),
                     ),
                   ),
@@ -138,25 +149,36 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen> {
                       style: kHeading14,
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: isPredictionLoading ? 0 : 20,
                   ),
                   isPredictionLoading
                       ? Center(
                           child: Column(
-                          children: [
-                            const CircularProgressIndicator(),
-                            const SizedBox(
-                              height: 14,
-                            ),
-                            AutoSizeText(
-                              "Please be Paitent, this will take some time",
-                              style: kHeading14,
-                              maxLines: 1,
-                              minFontSize: 1,
-                            )
-                          ],
-                        ))
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              LottieAnimation(
+                                asset: "assets/animations/plant.json",
+                                height: displayWidth(context) * 0.4,
+                                width: displayWidth(context) * 0.4,
+                                fit: BoxFit.contain,
+                              ),
+                              const SizedBox(
+                                height: 14,
+                              ),
+                              AutoSizeText(
+                                "Please be Paitent, this will take some time",
+                                style: kHeading14,
+                                maxLines: 1,
+                                minFontSize: 1,
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          ),
+                        )
                       : PrimaryButton(
                           title: predictedOnce ? "Predict Again" : "Predict",
                           onPressed: selectedImage != null

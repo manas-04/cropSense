@@ -1,9 +1,9 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:crop_sense/application/home_page/home_page_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../application/home_page/home_page_bloc.dart';
 import '../common/animated_button.dart';
 import '../common/home_carousel.dart';
 import '../helpers/color_helper.dart';

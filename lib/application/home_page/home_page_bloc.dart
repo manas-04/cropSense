@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:crop_sense/application/helpers/event.dart';
+import 'package:crop_sense/domain/sensor_data/sensor_data_response.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart';
@@ -68,6 +69,21 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         emit(PredictionSuccessfulState(response["data"]));
       } catch (e) {
         emit(PredictionErrorState(e.toString()));
+      }
+    });
+    on<TakeDataFromSensorClickedEvent>((event, emit) {
+      emit(EmptyHomePageState());
+      emit(TakeDataFromSensorClickedState());
+    });
+    on<FetchDataFromSensor>((event, emit) async {
+      emit(DataFromSensorLoadingState());
+      try {
+        final SensorDataResponse response =
+            await apiRepository.fetchSensorData();
+
+        emit(DataFromSensorLoadedState(response));
+      } catch (e) {
+        emit(DataFromSensorErrorState(e.toString()));
       }
     });
   }

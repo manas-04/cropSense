@@ -1,4 +1,5 @@
 import 'package:crop_sense/presentation/features/features_page.dart';
+import 'package:crop_sense/presentation/get_crop_recommendations/sensor_data_screen.dart';
 import 'package:crop_sense/routes/routes.dart';
 import 'package:get/route_manager.dart';
 
@@ -26,6 +27,11 @@ class RouteGenerator {
       name: Routes.diseaseDetectionPage,
       page: () => const DiseaseDetectionScreen(),
       transition: Transition.cupertino,
+    ),
+    GetPage(
+      name: Routes.sensorDataScreen,
+      transition: Transition.cupertino,
+      page: () => const SensorDataScreen(),
     ),
   ];
 }

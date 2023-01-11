@@ -95,7 +95,11 @@ class _MainPageState extends State<MainPage> {
                           ),
                           child: PrimaryButton(
                             title: "Take Data from Sensor",
-                            onPressed: () {},
+                            onPressed: () {
+                              context
+                                  .read<HomePageBloc>()
+                                  .add(TakeDataFromSensorClickedEvent());
+                            },
                             elevation: 0,
                           ),
                         ),
@@ -139,6 +143,10 @@ class _MainPageState extends State<MainPage> {
                 }
               },
             );
+          }
+          if (state is TakeDataFromSensorClickedState) {
+            Navigator.of(context).pop();
+            Navigator.of(context).pushNamed(Routes.sensorDataScreen);
           }
         },
         builder: (context, state) {

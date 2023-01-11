@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:crop_sense/domain/sensor_data/sensor_data_response.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:http_parser/http_parser.dart';
@@ -70,6 +71,20 @@ class MainApiRepository implements IMainApiRepository {
       return response.data;
     } on DioError catch (e) {
       Logger().e(e);
+      return ErrorHandler.handleError(e);
+    }
+  }
+
+  @override
+  Future fetchSensorData() async {
+    try {
+      final response = await Dio(options).get(
+        "https://cropsense-sensor.onrender.com/",
+      );
+      Logger().i(response.data);
+      return SensorDataResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      Logger().e(e.toString());
       return ErrorHandler.handleError(e);
     }
   }
