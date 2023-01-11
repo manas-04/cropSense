@@ -54,69 +54,70 @@ class _MainPageState extends State<MainPage> {
           if (state is CropRecommendationFeatureClickedState) {
             await Get.dialog(
               Center(
-                child: SizedBox(
-                  height: 220,
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxHeight: 220,
+                  ),
                   width: displayWidth(context) * 0.8,
                   child: Material(
                     borderRadius: BorderRadius.circular(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(Icons.close),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            AutoSizeText(
+                              "Select Input method to recieve plant recommendation",
+                              style: kHeading14,
+                              maxLines: 2,
+                              minFontSize: 1,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: displayWidth(context) * 0.08,
+                                vertical: 2,
+                              ),
+                              child: PrimaryButton(
+                                title: "Take Data from Sensor",
+                                onPressed: () {
+                                  context
+                                      .read<HomePageBloc>()
+                                      .add(TakeDataFromSensorClickedEvent());
+                                },
+                                elevation: 0,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: displayWidth(context) * 0.08,
+                                vertical: 2,
+                              ),
+                              child: PrimaryButton(
+                                title: "",
+                                onPressed: () {},
+                                color: Colors.white,
+                                textColor: Colors.black,
+                                elevation: 0,
+                                borderColor: primaryColor2,
+                                titleWidget: AutoSizeText(
+                                  "Enter your own Data",
+                                  style: kHeading12,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        AutoSizeText(
-                          "Please select one option to conitnue",
-                          style: kHeading14,
-                          maxLines: 2,
-                          minFontSize: 1,
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: displayWidth(context) * 0.08,
-                            vertical: 4,
-                          ),
-                          child: PrimaryButton(
-                            title: "Take Data from Sensor",
-                            onPressed: () {
-                              context
-                                  .read<HomePageBloc>()
-                                  .add(TakeDataFromSensorClickedEvent());
-                            },
-                            elevation: 0,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: displayWidth(context) * 0.08,
-                            vertical: 4,
-                          ),
-                          child: PrimaryButton(
-                            title: "Enter your own Data",
-                            onPressed: () {},
-                            color: Colors.white,
-                            textColor: Colors.black,
-                            elevation: 0,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),

@@ -26,10 +26,12 @@ class _LottieAnimationState extends State<LottieAnimation>
   void initState() {
     super.initState();
     controller = AnimationController(vsync: this);
+    controller.addStatusListener((status) async {});
   }
 
   @override
   void dispose() {
+    controller.removeStatusListener((status) {});
     controller.dispose();
     super.dispose();
   }
@@ -42,8 +44,6 @@ class _LottieAnimationState extends State<LottieAnimation>
       height: widget.height,
       width: widget.width,
       fit: widget.fit,
-      repeat: true,
-      reverse: true,
       onLoaded: (composition) {
         controller
           ..duration = composition.duration
