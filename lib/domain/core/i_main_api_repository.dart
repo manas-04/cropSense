@@ -12,4 +12,5 @@ abstract class IMainApiRepository<T> {
 
   Future<T> predictPlantDisease({required File picture});
   Future<T> fetchSensorData();
+  Future<T> fetchSensorRecommendedCrop();
 }

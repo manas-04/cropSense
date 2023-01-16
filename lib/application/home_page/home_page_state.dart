@@ -11,6 +11,28 @@ class HomePageInitState extends HomePageState {}
 
 class EmptyHomePageState extends HomePageState {}
 
+class EnterYourOwnState extends HomePageState {}
+
+class GetRecommendationDataFromSensorLoadingState extends HomePageState {}
+
+class GetRecommendationDataFromSensorLoadedState extends HomePageState {
+  final RecommendationResponse data;
+
+  const GetRecommendationDataFromSensorLoadedState(this.data);
+
+  @override
+  List<Object> get props => [data];
+}
+
+class GetRecommendationDataFromSensorErrorState extends HomePageState {
+  final String error;
+
+  const GetRecommendationDataFromSensorErrorState(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
 class DataFromSensorLoadingState extends HomePageState {}
 
 class DataFromSensorLoadedState extends HomePageState {

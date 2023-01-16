@@ -160,8 +160,8 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen> {
                             children: [
                               LottieAnimation(
                                 asset: "assets/animations/plant.json",
-                                height: displayWidth(context) * 0.4,
-                                width: displayWidth(context) * 0.4,
+                                height: displayWidth(context) * 0.46,
+                                width: displayWidth(context) * 0.46,
                                 fit: BoxFit.contain,
                               ),
                               const SizedBox(

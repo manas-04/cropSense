@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:crop_sense/application/helpers/event.dart';
+import 'package:crop_sense/domain/recommendation/recommendation_response.dart';
 import 'package:crop_sense/domain/sensor_data/sensor_data_response.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,19 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     on<CropRecommendationFeatureClickedEvent>((event, emit) {
       emit(EmptyHomePageState());
       emit(CropRecommendationFeatureClickedState());
+    });
+    on<EnterYourOwnDataEvent>((event, emit) {
+      emit(EmptyHomePageState());
+      emit(EnterYourOwnState());
+    });
+    on<GetRecommendationDataFromSensorEvent>((event, emit) async {
+      emit(GetRecommendationDataFromSensorLoadingState());
+      try {
+        final response = await apiRepository.fetchSensorRecommendedCrop();
+        emit(GetRecommendationDataFromSensorLoadedState(response));
+      } catch (e) {
+        emit(GetRecommendationDataFromSensorErrorState(e.toString()));
+      }
     });
     on<PlantsIOTImageClickedEvent>((event, emit) {
       emit(EmptyHomePageState());

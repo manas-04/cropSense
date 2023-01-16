@@ -10,6 +10,10 @@ class ContributeToUsButtonClickedEvent extends HomePageEvent {}
 
 class CropRecommendationFeatureClickedEvent extends HomePageEvent {}
 
+class EnterYourOwnDataEvent extends HomePageEvent {}
+
+class GetRecommendationDataFromSensorEvent extends HomePageEvent {}
+
 class PlantsIOTImageClickedEvent extends HomePageEvent {}
 
 class IPULogoClickedEvent extends HomePageEvent {}

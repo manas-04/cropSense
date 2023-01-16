@@ -88,4 +88,18 @@ class MainApiRepository implements IMainApiRepository {
       return ErrorHandler.handleError(e);
     }
   }
+
+  @override
+  Future fetchSensorRecommendedCrop() async {
+    try {
+      final response = await Dio(options).get(
+        "https://minor-project-server.onrender.com/crop-predict-sensor",
+      );
+      Logger().i(response.data);
+      return RecommendationResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      Logger().e(e.toString());
+      return ErrorHandler.handleError(e);
+    }
+  }
 }

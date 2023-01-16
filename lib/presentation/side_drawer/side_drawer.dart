@@ -5,6 +5,7 @@ import 'package:crop_sense/presentation/helpers/color_helper.dart';
 import 'package:crop_sense/presentation/helpers/size_helper.dart';
 import 'package:crop_sense/presentation/side_drawer/custom_icon_list_tile.dart';
 
+import '../../application/helpers/external_link_launcher.dart';
 import '../../application/side_drawer/side_drawer_bloc.dart';
 
 class SideDrawer extends StatefulWidget {
@@ -20,12 +21,22 @@ class _SideDrawerState extends State<SideDrawer> {
     return BlocProvider(
       create: (context) => SideDrawerBloc(InitialSideDrawerState()),
       child: BlocConsumer<SideDrawerBloc, SideDrawerState>(
-        listener: (context, state) {
-          if (state is ResourceTileClickedState) {}
-          if (state is GalleryTileClickedState) {}
-          if (state is AboutUsTileClickedState) {}
-          if (state is ProjectTeamTileClickedState) {}
-          if (state is ContactUsTileClickedState) {}
+        listener: (context, state) async {
+          if (state is ResourceTileClickedState) {
+            await launchUrl("http://www.plantiot-ipu.in/sensors.html");
+          }
+          if (state is GalleryTileClickedState) {
+            await launchUrl("http://www.plantiot-ipu.in/videos.html");
+          }
+          if (state is AboutUsTileClickedState) {
+            await launchUrl("http://www.plantiot-ipu.in/about.html");
+          }
+          if (state is ProjectTeamTileClickedState) {
+            await launchUrl("http://www.plantiot-ipu.in/project-team.html");
+          }
+          if (state is ContactUsTileClickedState) {
+            await launchUrl("http://www.plantiot-ipu.in/contact-us.html");
+          }
         },
         builder: (context, state) {
           return SafeArea(

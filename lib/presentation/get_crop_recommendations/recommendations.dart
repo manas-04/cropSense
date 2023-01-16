@@ -13,6 +13,7 @@ import '../../application/recommedation/recommendation_bloc.dart';
 import '../common/animated_button.dart';
 import '../common/default_text_box.dart';
 import '../common/loading_indicator.dart';
+import '../common/lottie_animator.dart';
 import '../helpers/color_helper.dart';
 import '../helpers/size_helper.dart';
 
@@ -423,7 +424,28 @@ class _CropRecommendationsPageState extends State<CropRecommendationsPage>
                                       padding: EdgeInsets.only(
                                         top: displayHeight(context) * 0.02,
                                       ),
-                                      child: const LoadingIndicator(),
+                                      child: Column(
+                                        children: [
+                                          LottieAnimation(
+                                            asset:
+                                                "assets/animations/Planta_0.json",
+                                            height: displayWidth(context) * 0.5,
+                                            width: displayWidth(context) * 0.5,
+                                          ),
+                                          const SizedBox(
+                                            height: 14,
+                                          ),
+                                          AutoSizeText(
+                                            "Please be Paitent, this will take some time",
+                                            style: kHeading16,
+                                            maxLines: 1,
+                                            minFontSize: 1,
+                                          ),
+                                          const SizedBox(
+                                            height: 14,
+                                          ),
+                                        ],
+                                      ),
                                     )
                                   : showResult
                                       ? Padding(

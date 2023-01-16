@@ -104,7 +104,11 @@ class _MainPageState extends State<MainPage> {
                               ),
                               child: PrimaryButton(
                                 title: "",
-                                onPressed: () {},
+                                onPressed: () {
+                                  context
+                                      .read<HomePageBloc>()
+                                      .add(EnterYourOwnDataEvent());
+                                },
                                 color: Colors.white,
                                 textColor: Colors.black,
                                 elevation: 0,
@@ -148,6 +152,10 @@ class _MainPageState extends State<MainPage> {
           if (state is TakeDataFromSensorClickedState) {
             Navigator.of(context).pop();
             Navigator.of(context).pushNamed(Routes.sensorDataScreen);
+          }
+          if (state is EnterYourOwnState) {
+            Navigator.of(context).pop();
+            Navigator.of(context).pushNamed(Routes.cropRecommendation);
           }
         },
         builder: (context, state) {
