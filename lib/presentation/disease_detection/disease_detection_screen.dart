@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:crop_sense/application/home_page/home_page_bloc.dart';
 import 'package:crop_sense/presentation/common/lottie_animator.dart';
@@ -23,6 +24,8 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen> {
   File? selectedImage;
   bool isPredictionLoading = false;
   bool predictedOnce = false;
+  bool showResult = false;
+  String answer = '';
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +45,8 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen> {
         if (state is PredictionSuccessfulState) {
           predictedOnce = true;
           isPredictionLoading = false;
-          Fluttertoast.showToast(
-            msg: "Predicted Result : ${state.answer}",
-            toastLength: Toast.LENGTH_LONG,
-          );
+          showResult = true;
+          answer = state.answer;
         }
       },
       builder: (context, state) {
@@ -152,6 +153,34 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen> {
                   SizedBox(
                     height: isPredictionLoading ? 0 : 20,
                   ),
+                  showResult
+                      ? Padding(
+                          padding: const EdgeInsets.only(bottom: 18.0),
+                          child: DefaultTextStyle(
+                            style: kHeading16.copyWith(
+                              color: primaryColor2,
+                            ),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: AnimatedTextKit(
+                                totalRepeatCount: 1,
+                                animatedTexts: [
+                                  TyperAnimatedText(
+                                    'Predicted Result : $answer',
+                                    speed: const Duration(
+                                      milliseconds: 70,
+                                    ),
+                                    textStyle: kHeading18.copyWith(
+                                      color: primaryColor1,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
                   isPredictionLoading
                       ? Center(
                           child: Column(

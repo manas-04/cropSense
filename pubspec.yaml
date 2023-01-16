@@ -59,6 +59,7 @@ dependencies:
   http: ^0.13.5
   image: ^3.3.0
   lottie: ^2.2.0
+  flutter_native_splash: ^2.2.16
 
 flutter_icons:
   android: true
@@ -71,6 +72,14 @@ flutter_icons:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_native_splash:
+  color: "#0C8F3B"
+  image: "assets/images/splash.png"
+
+  android_12:
+    image: "assets/images/splash.png"
+    icon_background_color: "#0C8F3B"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
